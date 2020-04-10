@@ -1,6 +1,7 @@
 package com.rofidamaher.movieapp
 
 import android.app.ProgressDialog
+import android.content.Intent
 import android.os.AsyncTask
 import android.os.Bundle
 import android.view.View
@@ -68,37 +69,54 @@ class MainActivity : AppCompatActivity() {
 
             var items:Data = arrayList!!.get(position)
             Toast.makeText(applicationContext,items.title,Toast.LENGTH_LONG).show()
+
+            val intent = Intent(this@MainActivity, single_movie_details::class.java)
+            intent.putExtra("id",items.id)
+            intent.putExtra("rating",items.rating)
+            intent.putExtra("popularity",items.popularity)
+            intent.putExtra("voteCount",items.voteCount)
+            intent.putExtra("title",items.title)
+            intent.putExtra("subtitle",items.subtitle)
+            intent.putExtra("date",items.date)
+            intent.putExtra("overview",items.overview)
+            intent.putExtra("img_url",items.img_url)
+            startActivity(intent)
         }
 
         fun jsonResult(jsonString: String?) {
 
-            val jsonArray = JSONArray(jsonString)
+            try {
+                val jsonArray = JSONArray(jsonString)
 
-            arrayList = ArrayList()
-            var i =0
-            while ( i < jsonArray.length())
-            {
-                val jsonObject = jsonArray.getJSONObject(i)
-                arrayList!!.add(
-                    Data(
-                        jsonObject.getInt("id"),
-                        jsonObject.getInt("vote_average"),
-                        jsonObject.getInt("popularity"),
-                        jsonObject.getInt("vote_count"),
-                        jsonObject.getString("title"),
-                        jsonObject.getString("original_title"),
-                        jsonObject.getString("release_date"),
-                        jsonObject.getString("overview "),
-                        jsonObject.getString("poster_path")
+                arrayList = ArrayList()
+                var i = 0
+                while (i < jsonArray.length()) {
+                    val jsonObject = jsonArray.getJSONObject(i)
+                    arrayList!!.add(
+                        Data(
+                            jsonObject.getInt("id"),
+                            jsonObject.getInt("vote_average"),
+                            jsonObject.getInt("popularity"),
+                            jsonObject.getInt("vote_count"),
+                            jsonObject.getString("title"),
+                            jsonObject.getString("original_title"),
+                            jsonObject.getString("release_date"),
+                            jsonObject.getString("overview "),
+                            jsonObject.getString("poster_path")
 
+                        )
                     )
-                )
-                i++
+                    i++
+                }
+
+                adapter = Adapter(applicationContext, arrayList!!)
+                rv_movie_list?.adapter = adapter
+                rv_movie_list?.onItemClickListener = this
+            }
+            finally {
+                // connection.disconnect()
             }
 
-            adapter = Adapter(applicationContext,arrayList!!)
-            rv_movie_list?.adapter = adapter
-             rv_movie_list?.onItemClickListener = this
 
         }
 
