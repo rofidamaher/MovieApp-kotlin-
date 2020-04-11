@@ -105,7 +105,7 @@ class MainActivity : AppCompatActivity() {
                             jsonObject.getString("title"),
                             jsonObject.getString("original_title"),
                             jsonObject.getString("release_date"),
-                            jsonObject.getString("overview "),
+                            jsonObject.getString("overview"),
                             jsonObject.getString("poster_path")
 
                         )
