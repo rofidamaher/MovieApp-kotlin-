@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import org.json.JSONArray
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -62,7 +63,10 @@ class MainActivity : AppCompatActivity() {
             super.onPostExecute(result)
             if(pDialog.isShowing())
                 pDialog.dismiss()
-            jsonResult(result)
+
+            val jsonObject = JSONObject(result)
+            val string = jsonObject.getString("results")
+            jsonResult(string)
         }
 
         override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
