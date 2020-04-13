@@ -64,9 +64,8 @@ class MainActivity : AppCompatActivity() {
             if(pDialog.isShowing())
                 pDialog.dismiss()
 
-            val jsonObject = JSONObject(result)
-            val string = jsonObject.getString("results")
-            jsonResult(string)
+
+            jsonResult(result)
         }
 
         override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -90,7 +89,8 @@ class MainActivity : AppCompatActivity() {
         fun jsonResult(jsonString: String?) {
 
             try {
-                val jsonArray = JSONArray(jsonString)
+                val jsonObject = JSONObject(jsonString)
+                val jsonArray = JSONArray( jsonObject.getString("results"))
 
                 arrayList = ArrayList()
                 var i = 0
@@ -118,7 +118,7 @@ class MainActivity : AppCompatActivity() {
                 rv_movie_list?.onItemClickListener = this
             }
             finally {
-                // connection.disconnect()
+
             }
 
 
